@@ -39,6 +39,7 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
+     lua
      bibtex
      latex
      cdlatex
@@ -319,7 +320,8 @@ before packages are loaded. If you are unsure, you should try in setting them in
       (setq blog-admin-backend-path "~/PAPERS/blog")
       (setq blog-admin-backend-new-post-in-drafts t)
       (setq blog-admin-backend-new-post-with-same-name-dir t)
-      ))
+      )
+    )
   )
 
 (defun dotspacemacs/user-config ()
@@ -339,7 +341,10 @@ you should place your code here."
                              (setq truncate-lines nil)))
   ;; 显示行号
   ;;(add-hook 'find-file-hooks (lambda () (linum-mode 1)))
-
+  ;; 在python-mode中设置company后端为company-anaconda
+  ;; (add-hook 'python-mode-hook
+  ;;           (lambda ()
+  ;;             (set (make-local-variable 'company-backends) '(company-anaconda))))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -374,7 +379,18 @@ you should place your code here."
  '(custom-safe-themes
    (quote
     ("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
+ '(elpy-company-post-completion-function (quote ignore))
+ '(elpy-django-always-prompt t)
+ '(elpy-mode-hook (quote (subword-mode hl-line-mode)))
+ '(elpy-modules
+   (quote
+    (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-highlight-indentation elpy-module-yasnippet elpy-module-sane-defaults)))
+ '(elpy-rpc-backend "rope")
  '(evil-want-Y-yank-to-eol nil)
+ '(google-translate-default-source-language "en")
+ '(google-translate-default-target-language "zh-CN")
+ '(google-translate-enable-ido-completion t)
+ '(google-translate-show-phonetic t)
  '(org-babel-load-languages
    (quote
     ((python . t)
@@ -389,8 +405,10 @@ you should place your code here."
  '(org-download-method (quote directory))
  '(org-download-screenshot-method "screencapture -i %s")
  '(org-startup-folded (quote showeverything))
+ '(org-startup-with-beamer-mode t)
  '(org-startup-with-inline-images t)
- '(org-toggle-latex-fragment (quote globally)))
+ '(org-toggle-latex-fragment (quote globally))
+ )
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
