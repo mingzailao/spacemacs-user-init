@@ -60,6 +60,7 @@ values."
      ;;spell-checking
      ;;syntax-checking
      ;; version-control
+     
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -345,6 +346,7 @@ you should place your code here."
   ;; (add-hook 'python-mode-hook
   ;;           (lambda ()
   ;;             (set (make-local-variable 'company-backends) '(company-anaconda))))
+  
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
