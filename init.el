@@ -31,6 +31,9 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     html
+     javascript
+     markdown
      yaml
      ;;(javascript :variables tern-command '("node" "/usr/local/lib/node_modules/tern/bin/tern"))
      ;; ----------------------------------------------------------------
@@ -138,8 +141,7 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(default
-                         spacemacs-light)
+   dotspacemacs-themes '(leuven)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -378,6 +380,7 @@ you should place your code here."
       ("\\Pi" "\\prod"))
      (83
       ("\\Sigma" "\\sum" "\\arcsin")))))
+ '(custom-enabled-themes (quote (leuven)))
  '(custom-safe-themes
    (quote
     ("fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
@@ -389,10 +392,10 @@ you should place your code here."
     (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-highlight-indentation elpy-module-yasnippet elpy-module-sane-defaults)))
  '(elpy-rpc-backend "rope")
  '(evil-want-Y-yank-to-eol nil)
- '(google-translate-default-source-language "en")
- '(google-translate-default-target-language "zh-CN")
- '(google-translate-enable-ido-completion t)
- '(google-translate-show-phonetic t)
+ '(google-translate-default-source-language "en" t)
+ '(google-translate-default-target-language "zh-CN" t)
+ '(google-translate-enable-ido-completion t t)
+ '(google-translate-show-phonetic t t)
  '(org-babel-load-languages
    (quote
     ((python . t)
@@ -408,9 +411,8 @@ you should place your code here."
  '(org-download-screenshot-method "screencapture -i %s")
  '(org-startup-folded (quote showeverything))
  '(org-startup-with-beamer-mode t)
- '(org-startup-with-inline-images t)
- '(org-toggle-latex-fragment (quote globally))
- )
+ '(org-startup-with-inline-images t t)
+ '(org-toggle-latex-fragment (quote globally)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
