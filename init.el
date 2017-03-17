@@ -32,9 +32,9 @@ values."
    dotspacemacs-configuration-layers
    '(
      html
-     javascript
      markdown
      yaml
+     scheme
      ;;(javascript :variables tern-command '("node" "/usr/local/lib/node_modules/tern/bin/tern"))
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -63,7 +63,6 @@ values."
      ;;spell-checking
      ;;syntax-checking
      ;; version-control
-     
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -403,7 +402,8 @@ you should place your code here."
      (emacs-lisp . t)
      (latex . t)
      (ditaa . t)
-     (dot \.t))))
+     (dot \.t)
+     (scheme . t))))
  '(org-ditaa-jar-path "/Users/apple/.emacs.d/elpa/contrib/scripts/ditaa0_9.jar")
  '(org-download-heading-lvl 0)
  '(org-download-image-dir nil)
@@ -411,8 +411,11 @@ you should place your code here."
  '(org-download-screenshot-method "screencapture -i %s")
  '(org-startup-folded (quote showeverything))
  '(org-startup-with-beamer-mode t)
- '(org-startup-with-inline-images t t)
- '(org-toggle-latex-fragment (quote globally)))
+ '(org-startup-with-inline-images t)
+ '(org-toggle-latex-fragment (quote globally))
+ '(scheme-mode-hook
+   (quote
+    (spacemacs//init-jump-handlers-scheme-mode spacemacs//init-company-scheme-mode company-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
