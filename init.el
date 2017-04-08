@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     graphviz
      html
      markdown
      yaml
@@ -56,6 +57,9 @@ values."
      ;; markdown
      org
      elpy
+     c-c++
+     gtags
+     ycmd
      ;;(python :variables python-test-runner '(pytest,nose))
      ;; (shell :variables
      ;;        shell-default-height 30
@@ -321,7 +325,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
       (setq blog-admin-backend-type 'hexo)
       (setq blog-admin-backend-path "~/PAPERS/blog")
       (setq blog-admin-backend-new-post-in-drafts t)
-      (setq blog-admin-backend-new-post-with-same-name-dir t)
+      (setq blog-admin-backend-new-post-with-same-name-dir t) 
       )
     )
   )
@@ -347,7 +351,8 @@ you should place your code here."
   ;; (add-hook 'python-mode-hook
   ;;           (lambda ()
   ;;             (set (make-local-variable 'company-backends) '(company-anaconda))))
-  
+  ;; set ycmd
+  (set-variable 'ycmd-server-command '("python" "/Users/apple/PAPERS/github/ycmd/ycmd/"))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -403,10 +408,12 @@ you should place your code here."
      (latex . t)
      (ditaa . t)
      (dot \.t)
-     (scheme . t))))
+     (scheme . t)
+     (dot . t))))
  '(org-ditaa-jar-path "/Users/apple/.emacs.d/elpa/contrib/scripts/ditaa0_9.jar")
- '(org-download-heading-lvl 0)
- '(org-download-image-dir nil)
+ '(org-download--dir-1 "/Users/apple/PAPERS/blog/source/img")
+ '(org-download-heading-lvl nil)
+ '(org-download-image-dir "/Users/apple/PAPERS/blog/source/img")
  '(org-download-method (quote directory))
  '(org-download-screenshot-method "screencapture -i %s")
  '(org-startup-folded (quote showeverything))
@@ -415,11 +422,42 @@ you should place your code here."
  '(org-toggle-latex-fragment (quote globally))
  '(scheme-mode-hook
    (quote
-    (spacemacs//init-jump-handlers-scheme-mode spacemacs//init-company-scheme-mode company-mode))))
+    (spacemacs//init-jump-handlers-scheme-mode spacemacs//init-company-scheme-mode company-mode)) t)
+ '(ycmd-parse-conditions (quote (save mode-enabled)) t)
+ '(ycmd-python-binary-path "/Users/apple/anaconda2/envs/keras/bin/python")
+ '(ycmd-server-command (quote ("python" "/Users/apple/PAPERS/github/ycmd/ycmd")) t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(defun my-org-screenshot ()
+  "Take a screenshot into a time stamped unique-named file in the
+same directory as the org-buffer and insert a link to this file."
+  (interactive)
+  (org-display-inline-images)
+  (setq filename
+	(concat
+	 (make-temp-name
+	  (concat (file-name-nondirectory (file-name-sans-extension buffer-file-name))
+		  "/"
+		  (format-time-string "%Y%m%d_%H%M%S_")) ) ".png"))
+  (unless (file-exists-p (file-name-directory filename))
+    (make-directory (file-name-directory filename)))
+					; take screenshot
+  (if (eq system-type 'darwin)
+      (progn
+	(call-process-shell-command "screencapture" nil nil nil nil " -s " (concat
+									    "\"" filename "\"" ))
+	(call-process-shell-command "convert" nil nil nil nil (concat "\"" filename "\" -resize  \"50%\"" ) (concat "\"" filename "\"" ))
+	))
+  (if (eq system-type 'gnu/linux)
+      (call-process "import" nil nil nil filename))
+					; insert into file if correctly taken
+  (if (file-exists-p filename)
+      (insert (concat "#+attr_html: :width 800\n" "[[file:" filename "]]")))
+  ;; (org-display-inline-images)
+  )
 
