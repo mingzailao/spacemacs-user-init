@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     python
      graphviz
      html
      markdown
@@ -57,15 +58,15 @@ values."
      ;; markdown
      org
      elpy
-     c-c++
      gtags
      ycmd
+     c-c++
      ;;(python :variables python-test-runner '(pytest,nose))
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
      ;;spell-checking
-     ;;syntax-checking
+     syntax-checking
      ;; version-control
      )
    ;; List of additional packages that will be installed without being
@@ -307,6 +308,9 @@ It is called immediately after `dotspacemacs/init', before layer configuration
 executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in `dotspacemacs/user-config' first."
+  ;;
+  (setq ycmd-force-semantic-completion t)
+
   ;;添加bibtex 方便应用
   (setq org-ref-default-bibliography '("~/PAPERS/BibTex/mingzailao.bib")
         org-ref-pdf-directory "~/PAPERS/PDF/"
@@ -328,6 +332,7 @@ before packages are loaded. If you are unsure, you should try in setting them in
       (setq blog-admin-backend-new-post-with-same-name-dir t) 
       )
     )
+  ;;
   )
 
 (defun dotspacemacs/user-config ()
@@ -351,8 +356,11 @@ you should place your code here."
   ;; (add-hook 'python-mode-hook
   ;;           (lambda ()
   ;;             (set (make-local-variable 'company-backends) '(company-anaconda))))
-  ;; set ycmd
-  (set-variable 'ycmd-server-command '("python" "/Users/apple/PAPERS/github/ycmd/ycmd/"))
+  ;;set ycmd
+  (setq ycmd-server-command '("python" "/Users/apple/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd/")
+        ycmd-global-config "/Users/apple/.spacemacs.d/.global_config.py"
+        )
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -384,6 +392,8 @@ you should place your code here."
       ("\\Pi" "\\prod"))
      (83
       ("\\Sigma" "\\sum" "\\arcsin")))))
+ '(company-ycmd-enable-fuzzy-matching nil)
+ '(company-ycmd-request-sync-timeout 0.1)
  '(custom-enabled-themes (quote (leuven)))
  '(custom-safe-themes
    (quote
@@ -422,10 +432,7 @@ you should place your code here."
  '(org-toggle-latex-fragment (quote globally))
  '(scheme-mode-hook
    (quote
-    (spacemacs//init-jump-handlers-scheme-mode spacemacs//init-company-scheme-mode company-mode)) t)
- '(ycmd-parse-conditions (quote (save mode-enabled)) t)
- '(ycmd-python-binary-path "/Users/apple/anaconda2/envs/keras/bin/python")
- '(ycmd-server-command (quote ("python" "/Users/apple/PAPERS/github/ycmd/ycmd")) t))
+    (spacemacs//init-jump-handlers-scheme-mode spacemacs//init-company-scheme-mode company-mode)) t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -461,3 +468,7 @@ same directory as the org-buffer and insert a link to this file."
   ;; (org-display-inline-images)
   )
 
+
+(defun generate-ycmd-files()
+  (interactive)
+  (call-process "python" "/Users/apple/PAPERS/github/YCM-Generator/config_gen.py" (file-name-directory buffer-file-name)))
