@@ -309,7 +309,6 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in `dotspacemacs/user-config' first."
   ;;
-  (setq ycmd-force-semantic-completion t)
 
   ;;添加bibtex 方便应用
   (setq org-ref-default-bibliography '("~/PAPERS/BibTex/mingzailao.bib")
@@ -357,10 +356,13 @@ you should place your code here."
   ;;           (lambda ()
   ;;             (set (make-local-variable 'company-backends) '(company-anaconda))))
   ;;set ycmd
-  (setq ycmd-server-command '("python" "/Users/apple/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd/")
-        ycmd-global-config "/Users/apple/.spacemacs.d/.global_config.py"
-        )
+  ;; (setq ycmd-server-command '("python" "/Users/apple/.vim/bundle/YouCompleteMe/third_party/ycmd/ycmd/")
+  ;;       ycmd-global-config "/Users/apple/.spacemacs.d/.global_config.py"
+  ;;       )
 
+  (set-variable 'ycmd-server-command '("python" "/Users/apple/PAPERS/github/ycmd/ycmd/"))
+  (set-variable 'ycmd-global-config "/Users/apple/.emacs.d/layers/+tools/ycmd/global_conf.py")
+  (add-hook 'c-mode-hook 'ycmd-mode)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -380,6 +382,9 @@ you should place your code here."
       t nil)
      ("eq*" "Insert equation *" "" cdlatex-environment
       ("equation*")
+      t nil)
+     ("defi" "Insert Definition" "" cdlatex-environment
+      ("definition")
       t nil)
      ("eqn*" "Insert equation *" "" cdlatex-environment
       ("eqnarray*")
