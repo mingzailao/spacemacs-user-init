@@ -16,7 +16,7 @@ values."
    ;; and `nil'. `unused' will lazy install only unused layers (i.e. layers
    ;; not listed in variable `dotspacemacs-configuration-layers'), `all' will
    ;; lazy install any layer that support lazy installation even the layers
-   ;; listed in `dotspacemacs-configuration-layers'. `nil' disable the lazy
+ 
    ;; installation feature and you have to explicitly list a layer in the
    ;; variable `dotspacemacs-configuration-layers' to install it.
    ;; (default 'unused)
@@ -31,6 +31,8 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     ruby
+     jekyll
      python
      graphviz
      html
@@ -308,12 +310,16 @@ It is called immediately after `dotspacemacs/init', before layer configuration
 executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in `dotspacemacs/user-config' first."
-  ;;
+  ;;add Tinghua Mirro
+  (setq configuration-layer--elpa-archives
+        '(("melpa-cn" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+          ("org-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
+          ("gnu-cn"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")))
 
   ;;添加bibtex 方便应用
-  (setq org-ref-default-bibliography '("~/PAPERS/BibTex/mingzailao.bib")
-        org-ref-pdf-directory "~/PAPERS/PDF/"
-        org-ref-bibliography-notes "~/PAPERS/BibTex/notes.org")
+  (setq org-ref-default-bibliography '("~/BibTex/")
+        org-ref-pdf-directory "~/PDF/"
+        org-ref-bibliography-notes "~/BibTex/notes.org")
   ;;添加xelatex中文支持
   (setq org-latex-pdf-process
         '("xelatex -interaction nonstopmode -output-directory %o %f"
@@ -326,13 +332,13 @@ before packages are loaded. If you are unsure, you should try in setting them in
     (progn
       ;; your config
       (setq blog-admin-backend-type 'hexo)
-      (setq blog-admin-backend-path "~/PAPERS/blog")
+      (setq blog-admin-backend-path "~/github/blog")
       (setq blog-admin-backend-new-post-in-drafts t)
       (setq blog-admin-backend-new-post-with-same-name-dir t) 
       )
     )
-  ;;
-  )
+  ;; ;;
+   )
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
@@ -433,8 +439,11 @@ you should place your code here."
  '(org-download-screenshot-method "screencapture -i %s")
  '(org-startup-folded (quote showeverything))
  '(org-startup-with-beamer-mode t)
- '(org-startup-with-inline-images t)
+ '(org-startup-with-inline-images t t)
  '(org-toggle-latex-fragment (quote globally))
+ '(package-selected-packages
+   (quote
+    (rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby hyde auctex-latexmk yapfify yaml-mode xterm-color ws-butler window-numbering which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package toc-org tagedit spacemacs-theme spaceline slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters quelpa pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox org-ref org-projectile org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file neotree multi-term move-text mmm-mode markdown-toc macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode info+ indent-guide ido-vertical-mode hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gtags helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag graphviz-dot-mode google-translate golden-ratio gnuplot gh-md ggtags geiser flycheck-ycmd flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elpy elisp-slime-nav dumb-jump disaster define-word cython-mode company-ycmd company-web company-statistics company-c-headers company-auctex company-anaconda column-enforce-mode cmake-mode clean-aindent-mode clang-format cdlatex bracketed-paste blog-admin auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
  '(scheme-mode-hook
    (quote
     (spacemacs//init-jump-handlers-scheme-mode spacemacs//init-company-scheme-mode company-mode)) t))
@@ -477,3 +486,53 @@ same directory as the org-buffer and insert a link to this file."
 (defun generate-ycmd-files()
   (interactive)
   (call-process "python" "/Users/apple/PAPERS/github/YCM-Generator/config_gen.py" (file-name-directory buffer-file-name)))
+
+
+;; (require 'cl)
+;; (require 'dash)
+
+;; (setq blog-dir "~/github/blog"
+;;       public-blog-dir "~/github/blog-public"
+;;       hugo-process "Hugo Server"
+;;       hugo-server-site "http://localhost:1313/")
+
+;; (defmacro with-dir (DIR &rest FORMS)
+;;   "Execute FORMS in DIR."
+;;   (let ((orig-dir (gensym)))
+;;     `(progn (setq ,orig-dir default-directory)
+;;             (cd ,DIR) ,@FORMS (cd ,orig-dir))))
+
+;; (defun deploy-blog ()
+;;   "Run hugo and push changes upstream."
+;;   (interactive)
+;;   (with-dir public-blog-dir
+;;             (shell-command "git rm -rf .")
+;;             (shell-command "git clean -fxd")
+
+;;             (with-dir blog-dir (->> public-blog-dir
+;;                                     (concat "hugo -d ")
+;;                                     shell-command))
+
+;;             (shell-command "git add .")
+;;             (--> (current-time-string)
+;;                  (concat "git commit -m \"" it "\"")
+;;                  (shell-command it))
+;;             (magit-push-current-to-upstream nil)))
+
+;; (defun start-blog-server ()
+;;   "Run hugo server if not already running and open its webpage."
+;;   (interactive)
+;;   (with-dir blog-dir
+;;             (unless (get-process hugo-process)
+;;               (start-process hugo-process nil "hugo" "server"))
+;;             (browse-url hugo-server-site)))
+
+;; (defun end-blog-server ()
+;;   "End hugo server process if running."
+;;   (interactive)
+;;   (--when-let (get-process hugo-process)
+;;     (delete-process it)))
+
+;; (spacemacs/set-leader-keys (kbd "ab") 'deploy-blog)
+;; (spacemacs/set-leader-keys (kbd "aa") 'start-blog-server)
+;; (spacemacs/set-leader-keys (kbd "ae") 'end-blog-server)
