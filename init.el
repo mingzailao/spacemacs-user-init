@@ -75,7 +75,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '(blog-admin)
+   dotspacemacs-additional-packages '(blog-admin ox-hugo)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -347,6 +347,12 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  ;;
+  (use-package ox-hugo
+    :ensure t                           ;Auto-install the package from Melpa
+    :after ox)
+
+
   ;; 在org-mode默认打开cdlatex
   (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
   ;; 在org-mode中默认换行
@@ -439,11 +445,11 @@ you should place your code here."
  '(org-download-screenshot-method "screencapture -i %s")
  '(org-startup-folded (quote showeverything))
  '(org-startup-with-beamer-mode t)
- '(org-startup-with-inline-images t t)
+ '(org-startup-with-inline-images t)
  '(org-toggle-latex-fragment (quote globally))
  '(package-selected-packages
    (quote
-    (rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby hyde auctex-latexmk yapfify yaml-mode xterm-color ws-butler window-numbering which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package toc-org tagedit spacemacs-theme spaceline slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters quelpa pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox org-ref org-projectile org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file neotree multi-term move-text mmm-mode markdown-toc macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode info+ indent-guide ido-vertical-mode hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gtags helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag graphviz-dot-mode google-translate golden-ratio gnuplot gh-md ggtags geiser flycheck-ycmd flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elpy elisp-slime-nav dumb-jump disaster define-word cython-mode company-ycmd company-web company-statistics company-c-headers company-auctex company-anaconda column-enforce-mode cmake-mode clean-aindent-mode clang-format cdlatex bracketed-paste blog-admin auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+    (ox-hugo rvm ruby-tools ruby-test-mode rubocop rspec-mode robe rbenv rake minitest chruby bundler inf-ruby hyde auctex-latexmk yapfify yaml-mode xterm-color ws-butler window-numbering which-key web-mode volatile-highlights vi-tilde-fringe uuidgen use-package toc-org tagedit spacemacs-theme spaceline slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters quelpa pytest pyenv-mode py-isort pug-mode popwin pip-requirements persp-mode pcre2el paradox org-ref org-projectile org-present org-pomodoro org-plus-contrib org-download org-bullets open-junk-file neotree multi-term move-text mmm-mode markdown-toc macrostep lua-mode lorem-ipsum live-py-mode linum-relative link-hint less-css-mode info+ indent-guide ido-vertical-mode hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers hide-comnt help-fns+ helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gtags helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag graphviz-dot-mode google-translate golden-ratio gnuplot gh-md ggtags geiser flycheck-ycmd flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elpy elisp-slime-nav dumb-jump disaster define-word cython-mode company-ycmd company-web company-statistics company-c-headers company-auctex company-anaconda column-enforce-mode cmake-mode clean-aindent-mode clang-format cdlatex bracketed-paste blog-admin auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
  '(scheme-mode-hook
    (quote
     (spacemacs//init-jump-handlers-scheme-mode spacemacs//init-company-scheme-mode company-mode)) t))
@@ -486,6 +492,8 @@ same directory as the org-buffer and insert a link to this file."
 (defun generate-ycmd-files()
   (interactive)
   (call-process "python" "/Users/apple/PAPERS/github/YCM-Generator/config_gen.py" (file-name-directory buffer-file-name)))
+
+
 
 
 ;; (require 'cl)
