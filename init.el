@@ -31,22 +31,22 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     ruby
-     jekyll
+;;     ruby
+;;     jekyll
      python
-     graphviz
-     html
+;;     graphviz
+;;     html
      markdown
      yaml
-     scheme
+;;     scheme
      ;;(javascript :variables tern-command '("node" "/usr/local/lib/node_modules/tern/bin/tern"))
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     helm
-     lua
+;;     helm
+;;     lua
      bibtex
      latex
      cdlatex
@@ -327,16 +327,16 @@ before packages are loaded. If you are unsure, you should try in setting them in
           "xelatex -interaction nonstopmode -output-directory %o %f"
           "xelatex -interaction nonstopmode -output-directory %o %f"))
   ;;
-  (use-package blog-admin
-    :init
-    (progn
-      ;; your config
-      (setq blog-admin-backend-type 'hexo)
-      (setq blog-admin-backend-path "~/github/blog")
-      (setq blog-admin-backend-new-post-in-drafts t)
-      (setq blog-admin-backend-new-post-with-same-name-dir t) 
-      )
-    )
+  ;; (use-package blog-admin
+  ;;   :init
+  ;;   (progn
+  ;;     ;; your config
+  ;;     (setq blog-admin-backend-type 'hexo)
+  ;;     (setq blog-admin-backend-path "~/github/blog")
+  ;;     (setq blog-admin-backend-new-post-in-drafts t)
+  ;;     (setq blog-admin-backend-new-post-with-same-name-dir t) 
+  ;;     )
+  ;;   )
   ;; ;;
    )
 
@@ -348,9 +348,9 @@ This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   ;;
-  (use-package ox-hugo
-    :ensure t                           ;Auto-install the package from Melpa
-    :after ox)
+  ;; (use-package ox-hugo
+  ;;   :ensure t                           ;Auto-install the package from Melpa
+  ;;   :after ox)
 
 
   ;; 在org-mode默认打开cdlatex
@@ -372,9 +372,9 @@ you should place your code here."
   ;;       ycmd-global-config "/Users/apple/.spacemacs.d/.global_config.py"
   ;;       )
 
-  (set-variable 'ycmd-server-command '("python" "/Users/apple/PAPERS/github/ycmd/ycmd/"))
-  (set-variable 'ycmd-global-config "/Users/apple/.emacs.d/layers/+tools/ycmd/global_conf.py")
-  (add-hook 'c-mode-hook 'ycmd-mode)
+  ;; (set-variable 'ycmd-server-command '("python" "/Users/apple/PAPERS/github/ycmd/ycmd/"))
+  ;; (set-variable 'ycmd-global-config "/Users/apple/.emacs.d/layers/+tools/ycmd/global_conf.py")
+  ;; (add-hook 'c-mode-hook 'ycmd-mode)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -460,38 +460,42 @@ you should place your code here."
  ;; If there is more than one, they won't work right.
  )
 
-(defun my-org-screenshot ()
-  "Take a screenshot into a time stamped unique-named file in the
-same directory as the org-buffer and insert a link to this file."
-  (interactive)
-  (org-display-inline-images)
-  (setq filename
-	(concat
-	 (make-temp-name
-	  (concat (file-name-nondirectory (file-name-sans-extension buffer-file-name))
-		  "/"
-		  (format-time-string "%Y%m%d_%H%M%S_")) ) ".png"))
-  (unless (file-exists-p (file-name-directory filename))
-    (make-directory (file-name-directory filename)))
-					; take screenshot
-  (if (eq system-type 'darwin)
-      (progn
-	(call-process-shell-command "screencapture" nil nil nil nil " -s " (concat
-									    "\"" filename "\"" ))
-	(call-process-shell-command "convert" nil nil nil nil (concat "\"" filename "\" -resize  \"50%\"" ) (concat "\"" filename "\"" ))
-	))
-  (if (eq system-type 'gnu/linux)
-      (call-process "import" nil nil nil filename))
-					; insert into file if correctly taken
-  (if (file-exists-p filename)
-      (insert (concat "#+attr_html: :width 800\n" "[[file:" filename "]]")))
-  ;; (org-display-inline-images)
-  )
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (defun my-org-screenshot ()                                                                                                          ;;
+;;   "Take a screenshot into a time stamped unique-named file in the                                                                    ;;
+;; same directory as the org-buffer and insert a link to this file."                                                                    ;;
+;;   (interactive)                                                                                                                      ;;
+;;   (org-display-inline-images)                                                                                                        ;;
+;;   (setq filename                                                                                                                     ;;
+;; 	(concat                                                                                                                             ;;
+;; 	 (make-temp-name                                                                                                                    ;;
+;; 	  (concat (file-name-nondirectory (file-name-sans-extension buffer-file-name))                                                      ;;
+;; 		  "/"                                                                                                                             ;;
+;; 		  (format-time-string "%Y%m%d_%H%M%S_")) ) ".png"))                                                                               ;;
+;;   (unless (file-exists-p (file-name-directory filename))                                                                             ;;
+;;     (make-directory (file-name-directory filename)))                                                                                 ;;
+;; 					; take screenshot                                                                                                           ;;
+;;   (if (eq system-type 'darwin)                                                                                                       ;;
+;;       (progn                                                                                                                         ;;
+;; 	(call-process-shell-command "screencapture" nil nil nil nil " -s " (concat                                                          ;;
+;; 									    "\"" filename "\"" ))                                                                                           ;;
+;; 	(call-process-shell-command "convert" nil nil nil nil (concat "\"" filename "\" -resize  \"50%\"" ) (concat "\"" filename "\"" ))   ;;
+;; 	))                                                                                                                                  ;;
+;;   (if (eq system-type 'gnu/linux)                                                                                                    ;;
+;;       (call-process "import" nil nil nil filename))                                                                                  ;;
+;; 					; insert into file if correctly taken                                                                                       ;;
+;;   (if (file-exists-p filename)                                                                                                       ;;
+;;       (insert (concat "#+attr_html: :width 800\n" "[[file:" filename "]]")))                                                         ;;
+;;   ;; (org-display-inline-images)                                                                                                     ;;
+;;   )                                                                                                                                  ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-(defun generate-ycmd-files()
-  (interactive)
-  (call-process "python" "/Users/apple/PAPERS/github/YCM-Generator/config_gen.py" (file-name-directory buffer-file-name)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (defun generate-ycmd-files()                                                                                               ;;
+;;   (interactive)                                                                                                            ;;
+;;   (call-process "python" "/Users/apple/PAPERS/github/YCM-Generator/config_gen.py" (file-name-directory buffer-file-name))) ;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
